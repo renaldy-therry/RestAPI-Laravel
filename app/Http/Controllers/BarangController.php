@@ -36,7 +36,8 @@ class BarangController extends Controller
             'nama' => 'required|string|unique:barang|max:20', 
             'varian' => 'required|string', 
             'harga_beli' => 'required|integer',
-            'harga_jual' => 'required|integer'
+            'harga_jual' => 'required|integer',
+            'jumlah'=>'required|integer'
         ]);
         $barang = Barang::create($request->all());
         return new BarangResource($barang);
@@ -75,7 +76,8 @@ class BarangController extends Controller
                 'nama' => 'required|string|unique:barang|max:20', 
                 'varian' => 'required|string', 
                 'harga_beli' => 'required|integer',
-                'harga_jual' => 'required|integer'
+                'harga_jual' => 'required|integer',
+                'jumlah'=>'required|integer'
             ]);
             $barang->update($request->all());
             return new BarangResource($barang);

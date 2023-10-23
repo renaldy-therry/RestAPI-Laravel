@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('varian');
             $table->integer('harga_beli');
             $table->integer('harga_jual');
+            $table->integer('jumlah');
             $table->timestamps();
         });
     }

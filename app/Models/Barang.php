@@ -27,7 +27,8 @@ class Barang extends Model
         'nama', 
         'varian', 
         'harga_beli', 
-        'harga_jual'
+        'harga_jual',
+        'jumlah',
     ];
   
 }

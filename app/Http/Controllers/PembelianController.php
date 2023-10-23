@@ -36,6 +36,7 @@ class PembelianController extends Controller
             'id_barang' => 'required|integer', 
             'id_suplier' => 'required|integer', 
             'jumlah' => 'required|integer', 
+            'tgl_pembelian' => 'required|date'
         ]);
         $pembelian = Pembelian::create($request->all());
         return new PembelianResource($pembelian);
@@ -74,6 +75,7 @@ class PembelianController extends Controller
                 'id_barang' => 'required|integer', 
                 'id_suplier' => 'required|integer', 
                 'jumlah' => 'required|integer', 
+                'tgl_pembelian' => 'required|date'
             ]);
             $pembelian->update($request->all());
             return new PembelianResource($pembelian);

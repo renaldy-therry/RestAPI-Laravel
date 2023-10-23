@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Barang;
 use App\Models\Pesanan;
 use Illuminate\Http\Request;
 use App\Http\Resources\PesananResource;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class PesananController extends Controller
@@ -32,11 +34,23 @@ class PesananController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'id_pelanggan' => 'required|integer', 
-            'id_barang' => 'required|integer', 
-            'jumlah' => 'required|integer', 
+            'id_pelanggan' => 'required|integer',
+            'id_barang' => 'required|integer',
+            'jumlah' => 'required|integer|min:1',
+            'tgl_pesan' => 'required|date'
         ]);
-        $pesanan = Pesanan::create($request->all());
+
+        $barang = Barang::find($request->input('id_barang'));
+
+        if (!$barang) {
+            return response()->json(['error' => 'ID Barang Tidak Ditemukan'], 404);
+        }
+
+        if ($request->input('jumlah') > $barang->jumlah) {
+            return response()->json(['error' => 'The ordered quantity exceeds available stock.'], 422);
+        }
+
+        $pesanan = Pesanan::create($validated);
         return new PesananResource($pesanan);
     }
 
@@ -70,11 +84,23 @@ class PesananController extends Controller
         try {
             $pesanan = Pesanan::findOrFail($id);
             $validated = $request->validate([
-                'id_pelanggan' => 'required|integer', 
-                'id_barang' => 'required|integer', 
-                'jumlah' => 'required|integer', 
+                'id_pelanggan' => 'required|integer',
+                'id_barang' => 'required|integer',
+                'jumlah' => 'required|integer|min:1',
+                'tgl_pesan' => 'required|date'
             ]);
-            $pesanan->update($request->all());
+
+            $barang = Barang::find($request->input('id_barang'));
+
+            if (!$barang) {
+                return response()->json(['error' => 'Invalid barang ID'], 404);
+            }
+
+            if ($request->input('jumlah') > $barang->jumlah) {
+                return response()->json(['error' => 'The ordered quantity exceeds available stock.'], 422);
+            }
+
+            $pesanan->update($validated);
             return new PesananResource($pesanan);
         } catch (ModelNotFoundException $exception) {
             return response()->json(['error'=>'id not found']);

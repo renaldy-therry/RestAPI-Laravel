@@ -21,6 +21,7 @@ class BarangResource extends JsonResource
             'varian' =>  $this->varian,
             'harga_beli' =>  $this->harga_beli,
             'harga_jual' =>  $this->harga_jual,
+            'jumlah'=> $this->jumlah,
             'created_at' => date_format($this->created_at, "Y/m/d H:i:s"),
         ];
     }
